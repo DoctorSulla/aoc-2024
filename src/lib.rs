@@ -1,7 +1,53 @@
+use std::fs;
+
 mod day_one_part_one;
 
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub fn read_file(file_name: &str) -> String {
+    fs::read_to_string(file_name).expect("Error reading file")
+}
+
+pub fn get_lists(file: String) -> (Vec<u32>, Vec<u32>) {
+    let mut list_one: Vec<u32> = vec![];
+    let mut list_two: Vec<u32> = vec![];
+
+    let lines = file.split("\n");
+    for line in lines {
+        if line == "" {
+        } else {
+            let (num_one, num_two) = line.split_once("   ").expect("Couldn't split");
+            let num_one = num_one.parse::<u32>().unwrap();
+            let num_two = num_two.parse::<u32>().unwrap();
+            list_one.push(num_one);
+            list_two.push(num_two);
+        }
+    }
+    list_one.sort();
+    list_two.sort();
+    (list_one, list_two)
+}
+
+pub fn get_diff((list_one, list_two): (Vec<u32>, Vec<u32>)) {
+    let mut i = 0;
+    let mut total: u32 = 0;
+    while i < list_one.len() {
+        total += list_one[i].abs_diff(list_two[i]);
+        i += 1;
+    }
+    println!("The total difference is {:?}", total);
+}
+
+pub fn get_similarity_score((list_one, list_two): (Vec<u32>, Vec<u32>)) {
+    let mut total = 0;
+    for row in list_one.into_iter() {
+        let count: u32 = list_two
+            .iter()
+            .filter(|&n| *n == row)
+            .count()
+            .try_into()
+            .unwrap();
+        total += row * count;
+    }
+    println!("The similarity score is {:?}", total)
 }
 
 #[cfg(test)]
@@ -9,8 +55,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn day_one_puzzle_one() {
+        let file = read_file("./puzzle_inputs/day_one_part_one.txt");
+        get_diff(get_lists(file));
+    }
+
+    #[test]
+    fn day_one_puzzle_two() {
+        let file = read_file("./puzzle_inputs/day_one_part_one.txt");
+        get_similarity_score(get_lists(file));
     }
 }
