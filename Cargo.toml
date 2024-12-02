@@ -4,3 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+
+[lib]
+name = "aoclibrary"
+path = "src/lib.rs"
+
+[[bin]]
+name = "aocbin"
+path = "src/main.rs"
