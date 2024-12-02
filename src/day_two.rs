@@ -21,6 +21,29 @@ pub fn get_safe_lines(file: String) {
     );
 }
 
+pub fn get_safe_line_variants(file: String) {
+    let mut safe_lines = 0;
+    let mut unsafe_lines = 0;
+
+    let lines = file.split("\n");
+    for line in lines {
+        if line == "" {
+        } else {
+            let values: Vec<&str> = line.split(" ").collect();
+            let values: Vec<i32> = values.into_iter().map(|v| v.parse().unwrap()).collect();
+            if are_line_variations_safe(values) {
+                safe_lines += 1;
+            } else {
+                unsafe_lines += 1
+            };
+        }
+    }
+    println!(
+        "The number of safe line with damepener is {} and unsafe lines is {}",
+        safe_lines, unsafe_lines
+    );
+}
+
 enum Direction {
     Ascending,
     Descending,
@@ -32,6 +55,24 @@ fn valid_diff(val_one: i32, val_two: i32) -> bool {
         return false;
     }
     true
+}
+
+fn are_line_variations_safe(line: Vec<i32>) -> bool {
+    let mut safe = false;
+    let mut i = 0;
+    if is_line_safe(line.clone()) {
+        safe = true;
+    }
+    while i < line.len() {
+        let mut variant = line.clone();
+        let _ = variant.remove(i);
+        if is_line_safe(variant) {
+            safe = true;
+        }
+        i += 1;
+    }
+
+    safe
 }
 
 fn is_line_safe(line: Vec<i32>) -> bool {
