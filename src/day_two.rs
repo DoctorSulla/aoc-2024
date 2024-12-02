@@ -1,10 +1,12 @@
+use std::cmp::Ordering;
+
 pub fn get_safe_lines(file: String) {
     let mut safe_lines = 0;
     let mut unsafe_lines = 0;
 
     let lines = file.split("\n");
     for line in lines {
-        if line == "" {
+        if line.is_empty() {
         } else {
             let values: Vec<&str> = line.split(" ").collect();
             let values: Vec<i32> = values.into_iter().map(|v| v.parse().unwrap()).collect();
@@ -27,7 +29,7 @@ pub fn get_safe_line_variants(file: String) {
 
     let lines = file.split("\n");
     for line in lines {
-        if line == "" {
+        if line.is_empty() {
         } else {
             let values: Vec<&str> = line.split(" ").collect();
             let values: Vec<i32> = values.into_iter().map(|v| v.parse().unwrap()).collect();
@@ -51,7 +53,7 @@ enum Direction {
 
 fn valid_diff(val_one: i32, val_two: i32) -> bool {
     let diff = val_one.abs_diff(val_two);
-    if diff < 1 || diff > 3 {
+    if !(1..=3).contains(&diff) {
         return false;
     }
     true
@@ -82,30 +84,32 @@ fn is_line_safe(line: Vec<i32>) -> bool {
     while i < line.len() {
         if i == 0 {
         } else if i == 1 {
-            if line[i] > line[i - 1] {
-                direction = Direction::Ascending;
-                if !valid_diff(line[i], line[i - 1]) {
-                    return false;
+            match line[i].cmp(&line[i - 1]) {
+                Ordering::Greater => {
+                    direction = Direction::Ascending;
+                    if !valid_diff(line[i], line[i - 1]) {
+                        return false;
+                    }
                 }
-            } else if line[i] < line[i - 1] {
-                direction = Direction::Descending;
-                if !valid_diff(line[i], line[i - 1]) {
-                    return false;
+                Ordering::Less => {
+                    direction = Direction::Descending;
+                    if !valid_diff(line[i], line[i - 1]) {
+                        return false;
+                    }
                 }
-            } else {
-                return false;
+                Ordering::Equal => return false,
             };
         } else {
             match direction {
                 Direction::Ascending => {
                     let diff = line[i] - line[i - 1];
-                    if diff < 1 || diff > 3 {
+                    if !(1..=3).contains(&diff) {
                         return false;
                     }
                 }
                 Direction::Descending => {
                     let diff = line[i - 1] - line[i];
-                    if diff < 1 || diff > 3 {
+                    if !(1..=3).contains(&diff) {
                         return false;
                     }
                 }

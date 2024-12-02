@@ -4,7 +4,7 @@ pub fn get_lists(file: String) -> (Vec<u32>, Vec<u32>) {
 
     let lines = file.split("\n");
     for line in lines {
-        if line == "" {
+        if line.is_empty() {
         } else {
             let (num_one, num_two) = line.split_once("   ").expect("Couldn't split");
             let num_one = num_one.parse::<u32>().unwrap();
