@@ -41,7 +41,7 @@ pub fn get_safe_line_variants(file: String) {
         }
     }
     println!(
-        "The number of safe line with damepener is {} and unsafe lines is {}",
+        "The number of safe line with dampener is {} and unsafe lines is {}",
         safe_lines, unsafe_lines
     );
 }
