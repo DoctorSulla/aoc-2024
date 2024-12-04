@@ -1,3 +1,4 @@
+use aoclibrary::day_four::*;
 use aoclibrary::day_one::*;
 use aoclibrary::day_three::*;
 use aoclibrary::day_two::*;
@@ -20,5 +21,10 @@ fn main() {
     // D3 P1
     get_valid_mul(file.clone());
     // D3 P2
-    parser(file)
+    parser(file);
+
+    let file = read_file("./puzzle_inputs/day_four.txt");
+    // D4 P1
+    get_lines_vec(file);
+    //
 }
