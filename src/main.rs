@@ -25,6 +25,7 @@ fn main() {
 
     let file = read_file("./puzzle_inputs/day_four.txt");
     // D4 P1
-    get_lines_vec(file);
-    //
+    check_for_xmas(get_lines_vec(file.clone()));
+    // D4 P2
+    check_for_xmas_two(get_lines_vec(file));
 }
