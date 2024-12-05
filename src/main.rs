@@ -1,3 +1,4 @@
+use aoclibrary::day_five::*;
 use aoclibrary::day_four::*;
 use aoclibrary::day_one::*;
 use aoclibrary::day_three::*;
@@ -28,4 +29,9 @@ fn main() {
     check_for_xmas(get_lines_vec(file.clone()));
     // D4 P2
     check_for_xmas_two(get_lines_vec(file));
+
+    let rules_file = read_file("./puzzle_inputs/day_five_rules.txt");
+    let updates_file = read_file("./puzzle_inputs/day_five_updates.txt");
+    // D5 P1
+    calculate(rules_file.clone(), updates_file.clone());
 }
