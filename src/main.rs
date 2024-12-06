@@ -1,6 +1,7 @@
 use aoclibrary::day_five::*;
 use aoclibrary::day_four::*;
 use aoclibrary::day_one::*;
+use aoclibrary::day_six::*;
 use aoclibrary::day_three::*;
 use aoclibrary::day_two::*;
 use aoclibrary::read_file;
@@ -34,4 +35,9 @@ fn main() {
     let updates_file = read_file("./puzzle_inputs/day_five_updates.txt");
     // D5 P1
     calculate(rules_file.clone(), updates_file.clone());
+
+    let file = read_file("./puzzle_inputs/day_six.txt");
+    // D6 P1
+    let map = get_map(file.clone());
+    patrol(get_starting_position(map.clone()).unwrap(), map.clone());
 }
