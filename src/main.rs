@@ -39,5 +39,10 @@ fn main() {
     let file = read_file("./puzzle_inputs/day_six.txt");
     // D6 P1
     let map = get_map(file.clone());
-    patrol(get_starting_position(map.clone()).unwrap(), map.clone());
+    patrol(
+        get_starting_position(map.clone()).unwrap(),
+        map.clone(),
+        true,
+    );
+    get_loop_count(map);
 }
