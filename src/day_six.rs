@@ -1,4 +1,6 @@
-#[derive(Debug, Clone, PartialEq)]
+use std::collections::HashSet;
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum Directions {
     Left,
     Right,
@@ -6,13 +8,7 @@ enum Directions {
     Down,
 }
 
-enum CheckResult {
-    Duplicate,
-    Loop,
-    NoMatch,
-}
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash, Eq, PartialEq)]
 pub struct Coordinate {
     x: usize,
     y: usize,
@@ -39,21 +35,6 @@ pub fn get_map(file: String) -> Vec<Vec<char>> {
     map
 }
 
-fn check(
-    needle: (&Directions, &Coordinate),
-    haystack: &Vec<(Directions, Coordinate)>,
-) -> CheckResult {
-    for coordinate in haystack {
-        if needle.1.x == coordinate.1.x && needle.1.y == coordinate.1.y && *needle.0 == coordinate.0
-        {
-            return CheckResult::Loop;
-        } else if needle.1.x == coordinate.1.x && needle.1.y == coordinate.1.y {
-            return CheckResult::Duplicate;
-        }
-    }
-    return CheckResult::NoMatch;
-}
-
 pub fn get_starting_position(map: Vec<Vec<char>>) -> Option<Coordinate> {
     for (y, line) in map.iter().enumerate() {
         if let Some(x) = line.iter().position(|v| *v == '^') {
@@ -64,55 +45,45 @@ pub fn get_starting_position(map: Vec<Vec<char>>) -> Option<Coordinate> {
 }
 
 pub fn get_loop_count(map: Vec<Vec<char>>) {
+    let starting_pos = get_starting_position(map.clone()).unwrap();
+    let possible_locations = patrol(starting_pos.clone(), map.clone(), false).unwrap();
     let mut loop_count = 0;
-    let mut i = 0;
 
-    while i < map.len() {
-        let mut j = 0;
-        while j < map[i].len() {
-            if map[i][j] == '.' {
-                let mut map_clone = map.clone();
-                map_clone[i][j] = '#';
-                if patrol(
-                    get_starting_position(map_clone.clone()).unwrap(),
-                    map_clone.clone(),
-                    false,
-                )
-                .is_some()
-                {
-                    loop_count += 1;
-                }
-            }
-            j += 1;
+    for location in possible_locations {
+        let mut map_clone = map.clone();
+        map_clone[location.y][location.x] = '#';
+
+        if patrol(starting_pos.clone(), map_clone.clone(), false).is_none() {
+            loop_count += 1;
         }
-        i += 1;
-        println!("We are now on row {}", i);
     }
+
     println!("Obstacles causing infinite loops are {}", loop_count);
 }
 
-pub fn patrol(mut position: Coordinate, map: Vec<Vec<char>>, print: bool) -> Option<()> {
-    let mut visited: Vec<(Directions, Coordinate)> = vec![];
-    let mut covered_squares = 0;
+pub fn patrol(
+    mut position: Coordinate,
+    map: Vec<Vec<char>>,
+    print: bool,
+) -> Option<HashSet<Coordinate>> {
+    let mut visited_with_direction: HashSet<(Directions, Coordinate)> = HashSet::new();
+    let mut visited: HashSet<Coordinate> = HashSet::new();
     let mut current_direction = Directions::Up;
     loop {
         match current_direction {
             Directions::Up => {
                 // About to leave
                 if position.y == 0 {
-                    covered_squares += 1;
+                    visited.insert(position.clone());
                     break;
                 }
                 if map[position.y - 1][position.x] == '#' {
                     current_direction = rotate_90(current_direction);
                 } else {
-                    match check((&current_direction, &position), &visited) {
-                        CheckResult::NoMatch => {
-                            covered_squares += 1;
-                            visited.push((current_direction.clone(), position.clone()));
-                        }
-                        CheckResult::Duplicate => {}
-                        CheckResult::Loop => return Some(()),
+                    visited.insert(position.clone());
+                    if !visited_with_direction.insert((current_direction.clone(), position.clone()))
+                    {
+                        return None;
                     }
                     position.y -= 1;
                 }
@@ -120,19 +91,16 @@ pub fn patrol(mut position: Coordinate, map: Vec<Vec<char>>, print: bool) -> Opt
             Directions::Down => {
                 // About to leave
                 if position.y == map.len() - 1 {
-                    covered_squares += 1;
+                    visited.insert(position.clone());
                     break;
                 }
                 if map[position.y + 1][position.x] == '#' {
                     current_direction = rotate_90(current_direction);
                 } else {
-                    match check((&current_direction, &position), &visited) {
-                        CheckResult::NoMatch => {
-                            covered_squares += 1;
-                            visited.push((current_direction.clone(), position.clone()));
-                        }
-                        CheckResult::Duplicate => {}
-                        CheckResult::Loop => return Some(()),
+                    visited.insert(position.clone());
+                    if !visited_with_direction.insert((current_direction.clone(), position.clone()))
+                    {
+                        return None;
                     }
                     position.y += 1;
                 }
@@ -140,38 +108,32 @@ pub fn patrol(mut position: Coordinate, map: Vec<Vec<char>>, print: bool) -> Opt
             Directions::Left => {
                 // About to leave
                 if position.x == 0 {
-                    covered_squares += 1;
+                    visited.insert(position.clone());
                     break;
                 }
                 if map[position.y][position.x - 1] == '#' {
                     current_direction = rotate_90(current_direction);
                 } else {
-                    match check((&current_direction, &position), &visited) {
-                        CheckResult::NoMatch => {
-                            covered_squares += 1;
-                            visited.push((current_direction.clone(), position.clone()));
-                        }
-                        CheckResult::Duplicate => {}
-                        CheckResult::Loop => return Some(()),
+                    visited.insert(position.clone());
+                    if !visited_with_direction.insert((current_direction.clone(), position.clone()))
+                    {
+                        return None;
                     }
                     position.x -= 1;
                 }
             }
             Directions::Right => {
                 if position.x == map[0].len() - 1 {
-                    covered_squares += 1;
+                    visited.insert(position.clone());
                     break;
                 }
                 if map[position.y][position.x + 1] == '#' {
                     current_direction = rotate_90(current_direction);
                 } else {
-                    match check((&current_direction, &position), &visited) {
-                        CheckResult::NoMatch => {
-                            covered_squares += 1;
-                            visited.push((current_direction.clone(), position.clone()));
-                        }
-                        CheckResult::Duplicate => {}
-                        CheckResult::Loop => return Some(()),
+                    visited.insert(position.clone());
+                    if !visited_with_direction.insert((current_direction.clone(), position.clone()))
+                    {
+                        return None;
                     }
                     position.x += 1;
                 }
@@ -179,7 +141,7 @@ pub fn patrol(mut position: Coordinate, map: Vec<Vec<char>>, print: bool) -> Opt
         }
     }
     if print {
-        println!("The number of squares covered is {}", covered_squares);
+        println!("The number of squares covered is {}", visited.len());
     }
-    None
+    Some(visited)
 }

@@ -6,6 +6,8 @@ use aoclibrary::day_three::*;
 use aoclibrary::day_two::*;
 use aoclibrary::read_file;
 
+use std::time::Instant;
+
 fn main() {
     let file = read_file("./puzzle_inputs/day_one.txt");
     // D1 P1
@@ -44,5 +46,9 @@ fn main() {
         map.clone(),
         true,
     );
+    // D6 P2
+    let start = Instant::now();
     get_loop_count(map);
+    let elapsed_time = start.elapsed();
+    println!("Day one part two took {}ms", elapsed_time.as_millis());
 }
