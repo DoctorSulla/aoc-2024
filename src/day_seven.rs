@@ -71,7 +71,7 @@ pub fn process_file_part_two(file: &str) {
             }
         }
     }
-    println!("The total is {}", total_solvable);
+    println!("The total including concat operator is {}", total_solvable);
 }
 
 fn generate_combos(len: usize) -> Vec<Vec<char>> {
