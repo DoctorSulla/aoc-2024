@@ -1,6 +1,7 @@
 use aoclibrary::day_five::*;
 use aoclibrary::day_four::*;
 use aoclibrary::day_one::*;
+use aoclibrary::day_seven::*;
 use aoclibrary::day_six::*;
 use aoclibrary::day_three::*;
 use aoclibrary::day_two::*;
@@ -50,5 +51,9 @@ fn main() {
     let start = Instant::now();
     get_loop_count(map);
     let elapsed_time = start.elapsed();
-    println!("Day one part two took {}ms", elapsed_time.as_millis());
+    println!("Day six part two took {}ms", elapsed_time.as_millis());
+
+    let file = read_file("./puzzle_inputs/day_seven.txt");
+    // D7 P1
+    process_file(&file);
 }
