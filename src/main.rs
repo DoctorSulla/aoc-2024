@@ -56,4 +56,5 @@ fn main() {
     let file = read_file("./puzzle_inputs/day_seven.txt");
     // D7 P1
     process_file(&file);
+    process_file_part_two(&file);
 }
