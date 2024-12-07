@@ -20,12 +20,10 @@ pub fn process_file(file: &str) {
                 for (i, number) in inputs.iter().enumerate() {
                     if i == 0 {
                         total = *number;
-                    } else {
-                        if combo[i - 1] == '0' {
-                            total += *number;
-                        } else if combo[i - 1] == '1' {
-                            total *= *number;
-                        }
+                    } else if combo[i - 1] == '0' {
+                        total += *number;
+                    } else if combo[i - 1] == '1' {
+                        total *= *number;
                     }
                 }
                 if total == target {
@@ -58,14 +56,12 @@ pub fn process_file_part_two(file: &str) {
                 for (i, number) in inputs.iter().enumerate() {
                     if i == 0 {
                         total = *number;
-                    } else {
-                        if combo[i - 1] == '0' {
-                            total += *number;
-                        } else if combo[i - 1] == '1' {
-                            total *= *number;
-                        } else if combo[i - 1] == '2' {
-                            total = format!("{}{}", total, number).parse().unwrap();
-                        }
+                    } else if combo[i - 1] == '0' {
+                        total += *number;
+                    } else if combo[i - 1] == '1' {
+                        total *= *number;
+                    } else if combo[i - 1] == '2' {
+                        total = format!("{}{}", total, number).parse().unwrap();
                     }
                 }
                 if total == target {
