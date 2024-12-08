@@ -1,3 +1,6 @@
+use aoclibrary::day_eight;
+use aoclibrary::day_eight::get_antinodes;
+use aoclibrary::day_eight::get_grid;
 use aoclibrary::day_five::*;
 use aoclibrary::day_four::*;
 use aoclibrary::day_one::*;
@@ -57,4 +60,9 @@ fn main() {
     // D7 P1
     process_file(&file);
     process_file_part_two(&file);
+
+    let file = read_file("./puzzle_inputs/day_eight.txt");
+    // D8 P1
+    get_antinodes(get_grid(&file));
+    // D8 P2
 }
