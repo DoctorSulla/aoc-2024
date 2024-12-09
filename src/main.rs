@@ -61,7 +61,6 @@ fn main() {
 
     let file = read_file("./puzzle_inputs/day_eight.txt");
     // D8 P1
-    collect_antennas(get_grid(&file));
     get_antinodes(get_grid(&file));
     // D8 P2
 }
