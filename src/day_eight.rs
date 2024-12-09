@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 pub fn get_grid(file: &str) -> Vec<Vec<char>> {
@@ -9,7 +10,7 @@ pub fn get_grid(file: &str) -> Vec<Vec<char>> {
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
-struct Coordinate {
+pub struct Coordinate {
     x: usize,
     y: usize,
 }
@@ -43,69 +44,31 @@ fn is_double(diff_one: (i16, i16), diff_two: (i16, i16)) -> bool {
     false
 }
 
+pub fn collect_antennas(grid: Vec<Vec<char>>) -> HashMap<char, Vec<Coordinate>> {
+    let mut antenna_map: HashMap<char, Vec<Coordinate>> = HashMap::new();
+    for (row_index, row) in grid.iter().enumerate() {
+        for (col_index, char) in row.iter().enumerate() {
+            if *char != '.' {
+                if !antenna_map.contains_key(char) {
+                    antenna_map.insert(*char, vec![Coordinate::new(col_index, row_index)]);
+                } else {
+                    antenna_map
+                        .get_mut(char)
+                        .unwrap()
+                        .push(Coordinate::new(col_index, row_index));
+                }
+            }
+        }
+    }
+    println!("{:?}", antenna_map);
+    antenna_map
+}
+
 pub fn get_antinodes(grid: Vec<Vec<char>>) {
     let mut antinodes: std::collections::HashSet<Coordinate> = HashSet::new();
     for (row_index, row) in grid.iter().enumerate() {
         for (col_index, char) in row.iter().enumerate() {
-            if *char != '.' {
-                let current_char = *char;
-                // let current_coordinate = Coordinate::new(col_index, row_index);
-                let mut in_scope: Vec<Coordinate> = vec![];
-                // Add row
-                for num in 0..row.len() {
-                    if grid[row_index][num] == current_char && num != col_index {
-                        in_scope.push(Coordinate::new(num, row_index))
-                    }
-                }
-                // Add col
-                for num in 0..grid.len() {
-                    if grid[num][col_index] == current_char && num != row_index {
-                        in_scope.push(Coordinate::new(num, row_index))
-                    }
-                }
-                // Go left and up unti we hit edge
-                let mut x = col_index - 1;
-                let mut y = row_index - 1;
-                while grid.get(y).is_some() && grid.get(y).unwrap().get(x).is_some() {
-                    if grid[y][x] == current_char {
-                        in_scope.push(Coordinate::new(x, y));
-                    }
-                    x -= 1;
-                    y -= 1;
-                }
-                // Go right and up until we hit edge
-                let mut x = col_index + 1;
-                let mut y = row_index - 1;
-                while grid.get(y).is_some() && grid.get(y).unwrap().get(x).is_some() {
-                    if grid[y][x] == current_char {
-                        in_scope.push(Coordinate::new(x, y));
-                    }
-                    x += 1;
-                    y -= 1;
-                }
-                // Go left and down until we hit edge
-                let mut x = col_index - 1;
-                let mut y = row_index + 1;
-                while grid.get(y).is_some() && grid.get(y).unwrap().get(x).is_some() {
-                    if grid[y][x] == current_char {
-                        in_scope.push(Coordinate::new(x, y));
-                    }
-                    x -= 1;
-                    y += 1;
-                }
-
-                // Go right and down until we hit edge
-                let mut x = col_index + 1;
-                let mut y = row_index + 1;
-                while grid.get(y).is_some() && grid.get(y).unwrap().get(x).is_some() {
-                    if grid[y][x] == current_char {
-                        in_scope.push(Coordinate::new(x, y));
-                    }
-                    x += 1;
-                    y += 1;
-                }
-                println!("{:?}", in_scope);
-            }
+            if *char != '.' {}
         }
     }
     println!("The number of antinodes is {}", antinodes.len());
