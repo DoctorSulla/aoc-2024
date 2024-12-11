@@ -65,7 +65,9 @@ fn main() {
     // get_antinodes(get_grid(&file));
 
     //let file = read_file("./puzzle_inputs/test_input_nine.txt");
-    let file = read_file("./puzzle_inputs/day_nine.txt");
+    let file = read_file("./puzzle_inputs/test_input_nine.txt");
+    let file_system = generate_filesystem(&file);
+    defrag(file_system.1.clone());
 
-    defrag(generate_filesystem(&file));
+    defrag_part_two(file_system.1, file_system.0);
 }
