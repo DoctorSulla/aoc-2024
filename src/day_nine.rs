@@ -76,7 +76,7 @@ pub fn defrag_part_two(mut fs: Vec<Option<Num>>, mut max_id: Num) {
                             fs[i] = *val;
                             i += 1;
                         }
-                        buffer = vec![];
+                        buffer.clear();
                         break;
                     }
                 } else {
