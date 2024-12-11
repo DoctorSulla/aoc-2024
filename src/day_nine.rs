@@ -53,11 +53,14 @@ pub fn defrag_part_two(mut fs: Vec<Option<Num>>, mut max_id: Num) {
     while index > 0 {
         if fs[index] == current_id {
             buffer.push(fs[index].clone());
+            index -= 1;
         } else if !buffer.is_empty() {
-            println!("{:?}", buffer);
             let mut i = 0;
             let mut none_count = 0;
             while i < fs.len() {
+                if i > index {
+                    break;
+                }
                 if fs[i].is_none() {
                     none_count += 1;
                     if buffer.len() == none_count {
@@ -69,14 +72,11 @@ pub fn defrag_part_two(mut fs: Vec<Option<Num>>, mut max_id: Num) {
                         }
                         // In with the new
                         i -= none_count - 1;
-                        println!("Start inserting at {}", i);
                         for val in &buffer {
                             fs[i] = *val;
                             i += 1;
                         }
-                        println!("{:?}", fs);
                         buffer = vec![];
-                        current_id = None;
                         break;
                     }
                 } else {
@@ -90,9 +90,9 @@ pub fn defrag_part_two(mut fs: Vec<Option<Num>>, mut max_id: Num) {
             }
             max_id -= 1;
             current_id = Some(max_id);
+        } else {
+            index -= 1;
         }
-
-        index -= 1;
     }
 
     let mut checksum: Num = 0;

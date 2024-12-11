@@ -64,8 +64,8 @@ fn main() {
     // // D8 P1/P2
     // get_antinodes(get_grid(&file));
 
+    let file = read_file("./puzzle_inputs/day_nine.txt");
     //let file = read_file("./puzzle_inputs/test_input_nine.txt");
-    let file = read_file("./puzzle_inputs/test_input_nine.txt");
     let file_system = generate_filesystem(&file);
     defrag(file_system.1.clone());
 
