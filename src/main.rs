@@ -7,6 +7,7 @@ use aoclibrary::day_nine::*;
 // use aoclibrary::day_six::*;
 // use aoclibrary::day_three::*;
 // use aoclibrary::day_two::*;
+use aoclibrary::day_ten::*;
 use aoclibrary::read_file;
 
 //use std::time::Instant;
