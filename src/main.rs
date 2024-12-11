@@ -71,4 +71,9 @@ fn main() {
     defrag(file_system.1.clone());
 
     defrag_part_two(file_system.1, file_system.0);
+
+    // D10 P1
+    let file = read_file("./puzzle_inputs/day_ten.txt");
+    let map = generate_map(&file);
+    walk_map(&map);
 }
