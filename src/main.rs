@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 // use aoclibrary::day_eight::*;
 // use aoclibrary::day_five::*;
 // use aoclibrary::day_four::*;
@@ -82,9 +80,8 @@ fn main() {
 
     let file = read_file("./puzzle_inputs/day_eleven.txt");
     // D11 P1
+    let rocks = generate_initial_rocks(&file);
     let mut total: u64 = 0;
-    let mut rocks = generate_initial_rocks(&file);
-    let mut input_output: HashMap<u64, (u64, Option<u64>)> = HashMap::new();
-    blink_x_times(25, &mut rocks, &mut total, &mut input_output);
+    blink(rocks, 25, &mut total);
     println!("{}", total);
 }
