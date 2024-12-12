@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 // use aoclibrary::day_eight::*;
 // use aoclibrary::day_five::*;
 // use aoclibrary::day_four::*;
@@ -7,6 +9,7 @@ use aoclibrary::day_nine::*;
 // use aoclibrary::day_six::*;
 // use aoclibrary::day_three::*;
 // use aoclibrary::day_two::*;
+use aoclibrary::day_eleven::*;
 use aoclibrary::day_ten::*;
 use aoclibrary::read_file;
 
@@ -76,4 +79,12 @@ fn main() {
     let file = read_file("./puzzle_inputs/day_ten.txt");
     let map = generate_map(&file);
     walk_map(&map);
+
+    let file = read_file("./puzzle_inputs/day_eleven.txt");
+    // D11 P1
+    let mut total: u64 = 0;
+    let mut rocks = generate_initial_rocks(&file);
+    let mut input_output: HashMap<u64, (u64, Option<u64>)> = HashMap::new();
+    blink_x_times(25, &mut rocks, &mut total, &mut input_output);
+    println!("{}", total);
 }
