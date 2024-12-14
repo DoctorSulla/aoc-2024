@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 // use aoclibrary::day_eight::*;
 // use aoclibrary::day_five::*;
 // use aoclibrary::day_four::*;
@@ -79,9 +81,10 @@ fn main() {
     walk_map(&map);
 
     let file = read_file("./puzzle_inputs/day_eleven.txt");
-    // D11 P1
+    // D11
+    let mut input_output_cache: HashMap<Vec<u64>, (Vec<u64>, Vec<u64>)> = HashMap::new();
     let rocks = generate_initial_rocks(&file);
-    let mut total: u64 = 0;
-    blink(rocks, 25, &mut total);
+    let mut total: u64 = rocks.len() as u64;
+    blink(rocks, 40, &mut total, &mut input_output_cache);
     println!("{}", total);
 }
