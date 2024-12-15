@@ -10,6 +10,7 @@ pub mod day_seven;
 pub mod day_six;
 pub mod day_ten;
 pub mod day_three;
+pub mod day_twelve;
 pub mod day_two;
 
 pub fn read_file(file_name: &str) -> String {

@@ -52,31 +52,8 @@ pub fn blink(mut rocks: HashMap<usize, usize>, iterations: usize) {
         rocks = new_map;
     }
     let total: usize = rocks.values().sum();
-    println!("The total is {}", total);
+    println!(
+        "The total number of rocks after {} iterations is {}",
+        iterations, total
+    );
 }
-// for num in (0..remaining_iterations).rev() {
-//     let mut rock_buffer: Vec<u64> = vec![];
-//     if let Some(result) = cache.get(&rocks) {
-//         rock_buffer = result.1.clone();
-//         rocks = result.0.clone();
-//     } else {
-//         let initial_rocks = rocks.clone();
-//         for rock in rocks.iter_mut() {
-//             if *rock == 0 {
-//                 *rock = 1;
-//             } else if rock.to_string().len() % 2 == 0 {
-//                 let rock_string = rock.to_string();
-//                 let (first_half, second_half) = &rock_string.split_at(rock_string.len() / 2);
-//                 *rock = first_half.parse().unwrap();
-//                 rock_buffer.push(second_half.parse::<u64>().unwrap());
-//             } else {
-//                 *rock = *rock * 2024;
-//             }
-//         }
-//         cache.insert(initial_rocks, (rocks.clone(), rock_buffer.clone()));
-//     }
-
-//     //blink(rocks.clone(), num, total);
-//     *total += rock_buffer.len() as u64;
-//     blink(rock_buffer, num, total, cache);
-// }
