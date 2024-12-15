@@ -9,7 +9,7 @@ use aoclibrary::day_nine::*;
 // use aoclibrary::day_two::*;
 use aoclibrary::day_eleven::*;
 use aoclibrary::day_ten::*;
-use aoclibrary::day_twelve;
+use aoclibrary::day_twelve::*;
 use aoclibrary::read_file;
 
 //use std::time::Instant;
@@ -84,4 +84,8 @@ fn main() {
     let rocks = generate_initial_rocks(&file);
     blink(rocks.clone(), 25);
     blink(rocks, 75);
+
+    let file = read_file("./puzzle_inputs/test_input_twelve.txt");
+    //D12
+    walk_farm(&mut get_farm(&file));
 }
