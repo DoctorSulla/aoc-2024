@@ -13,6 +13,7 @@ pub fn get_farm(file: &str) -> Vec<Vec<GardenStatus>> {
 }
 
 pub fn walk_farm(map: &mut Vec<Vec<GardenStatus>>) {
+    let mut le_total = 0;
     let mut current_char: GardenStatus;
     for row_index in 0..map.len() {
         for col_index in 0..map[row_index].len() {
@@ -31,14 +32,17 @@ pub fn walk_farm(map: &mut Vec<Vec<GardenStatus>>) {
                         &mut perimeter,
                     );
                     println!(
-                        "The area for the contiguous region {:?} is {:?} and the perimeter is {}",
-                        current_char, area, perimeter
+                        // "The area for the contiguous region {:?} is {:?} and the perimeter is {}",
+                        current_char,
+                        area, perimeter
                     );
+                    le_total += area * perimeter;
                 }
                 GardenStatus::Visited(_) => {}
             }
         }
     }
+    println!("The total is {}", le_total);
 }
 
 fn get_contiguous_region(
@@ -51,6 +55,37 @@ fn get_contiguous_region(
 ) {
     match current_char {
         GardenStatus::Unvisited(v) => {
+            let mut perimeter_addition = 4;
+
+            if row_index != 0
+                && (map[row_index - 1][col_index] == current_char
+                    || map[row_index - 1][col_index] == GardenStatus::Visited(v))
+            {
+                perimeter_addition -= 1;
+            }
+            // Check down
+            if row_index != map.len() - 1
+                && (map[row_index + 1][col_index] == current_char
+                    || map[row_index + 1][col_index] == GardenStatus::Visited(v))
+            {
+                perimeter_addition -= 1;
+            }
+            // Check left
+            if col_index != 0
+                && (map[row_index][col_index - 1] == current_char
+                    || map[row_index][col_index - 1] == GardenStatus::Visited(v))
+            {
+                perimeter_addition -= 1;
+            }
+            // Check right
+            if col_index != map[0].len() - 1
+                && (map[row_index][col_index + 1] == current_char
+                    || map[row_index][col_index + 1] == GardenStatus::Visited(v))
+            {
+                perimeter_addition -= 1;
+            }
+            *perimeter += perimeter_addition;
+
             // Check up
             if row_index != 0 && map[row_index - 1][col_index] == current_char {
                 *area += 1;
