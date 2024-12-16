@@ -85,7 +85,8 @@ fn main() {
     blink(rocks.clone(), 25);
     blink(rocks, 75);
 
-    let file = read_file("./puzzle_inputs/day_twelve.txt");
+    let file = read_file("./puzzle_inputs/test_input_twelve.txt");
+    // let file = read_file("./puzzle_inputs/day_twelve.txt");
     //D12
     walk_farm(&mut get_farm(&file));
 }
